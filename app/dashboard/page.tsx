@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import CourseProgress from "@/components/course-progress";
 import GapList from "@/components/gap-list";
 import InsightCard from "@/components/insight-card";
@@ -7,9 +8,15 @@ import SetupSteps from "@/components/setup-steps";
 import SkillRadar from "@/components/skill-radar";
 import StatCard from "@/components/stat-card";
 import { ClockIcon } from "@/components/icons";
-import { courses, cpmkGaps, insight, profile, setupSteps, skillAxes, stats } from "@/lib/mock-data";
+import { courses, cpmkGaps, insight, profile, skillAxes, stats } from "@/lib/mock-data";
 
 export const metadata: Metadata = { title: "Dashboard" };
+
+const linkedSteps = [
+  { label: "Unggah materi sesi 1-5", detail: "PPT dan transkrip Zoom Ekonomi Bisnis", done: true, href: "/materi" },
+  { label: "Tetapkan CPMK dan rubrik", detail: "4 CPMK, rubrik penilaian UTS", done: true, href: "/materi" },
+  { label: "Hubungkan API key", detail: "Dipakai untuk membuat soal latihan", done: false, href: "/pengaturan" },
+];
 
 export default function DashboardPage() {
   const ranked = [...skillAxes].sort((a, b) => b.you - a.you);
@@ -31,13 +38,16 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/latihan"
+            className="inline-flex min-h-11 items-center rounded-control bg-sky-deep px-5 text-small font-semibold text-white transition-colors duration-200 hover:bg-sky"
+          >
+            Mulai latihan soal
+          </Link>
           <span className="inline-flex min-h-11 items-center gap-2 rounded-pill border border-outline bg-white px-4 text-small text-ink-muted">
             <ClockIcon className="h-4 w-4" />
             {profile.examLabel} · {profile.daysToExam} hari lagi
-          </span>
-          <span className="inline-flex min-h-11 items-center rounded-pill bg-sun/20 px-4 text-small font-medium text-ink">
-            Data contoh
           </span>
         </div>
       </header>
@@ -100,7 +110,7 @@ export default function DashboardPage() {
 
         <div className="flex flex-col gap-6">
           <GapList gaps={cpmkGaps} />
-          <SetupSteps steps={setupSteps} />
+          <SetupSteps steps={linkedSteps} />
         </div>
       </div>
 
